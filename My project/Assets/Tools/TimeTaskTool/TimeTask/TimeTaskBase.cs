@@ -1,48 +1,37 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Tools.TimeTaskTool.TimeTask
 {
     public class TimeTaskBase
     {
-        private static int _taskID = -1;
-        public int get_TaskID => _taskID;
+        private static int _taskID = 0;
 
-        public TimeTaskBase() => _taskID++;
+        private int _childTaskID;
+        public int get_TaskID => _childTaskID;
+
+        public TimeTaskBase() => _childTaskID = _taskID++;
 
         protected int timeStepArgs = 0;
         protected int countDown = 0;
 
         protected TIMETASKTYPE taskType = TIMETASKTYPE.DEFAULT;
 
+        protected SemaphoreSlim _callbackLock = new SemaphoreSlim(1);
         public bool isPause = false;
 
         public Action callback = null;
         protected int initial_Loop = 0;
         public int loop = 0;
 
-        public virtual void OnTick(int timeArgs)
+        private bool isCallbackRunning = false;
+        
+        public virtual async Task OnTick(int timeArgs)
         {
-            if (isPause)
-                return;
-
-            countDown -= timeArgs;
-            if (countDown <= 0)
-            {
-                callback?.Invoke();
-                countDown = timeStepArgs;
-                switch (taskType)
-                {
-                    case TIMETASKTYPE.SCHEDULEDTASK:
-                        TimeTaskManager.Init.Remove_TaskByTaskID(get_TaskID);
-                        break;
-                    case TIMETASKTYPE.INTERVALTASK:
-                        loop--;
-                        if(loop == 0)
-                            TimeTaskManager.Init.Remove_TaskByTaskID(get_TaskID);
-                        break;
-                }
-            }
+            this.countDown -= timeArgs;
+            await _callbackLock.WaitAsync();
         }
 
         public virtual void OnPause()

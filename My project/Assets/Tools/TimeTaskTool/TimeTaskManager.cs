@@ -67,6 +67,7 @@ namespace Tools.TimeTaskTool
             {
                 ScheduledTask task = new ScheduledTask(timeArgs, callback);
                 _taskscontainer.Add_Node(task);
+                await Task.Delay(1);
                 return task.get_TaskID;
             }
             finally
