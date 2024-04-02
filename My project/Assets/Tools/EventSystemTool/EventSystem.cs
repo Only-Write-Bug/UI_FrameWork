@@ -21,10 +21,10 @@ namespace Tools.EventSystemTool
             return _eventContrainer[eventName].AddAction(callback);
         }
 
-        public void PublishEvent(string eventName)
+        public void PublishEvent(string eventName, params object[] args)
         {
             if(_eventContrainer.ContainsKey(eventName))
-                _eventContrainer[eventName].Publish();
+                _eventContrainer[eventName].Publish(args);
         }
 
         public void ClearEventAction(string eventName)
