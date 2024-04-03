@@ -3,6 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Tools.TimeTaskTool.Taskscontainer;
 using Tools.TimeTaskTool.TimeTask;
+using UnityEngine;
+using Util.Attributes;
 
 namespace Tools.TimeTaskTool
 {
@@ -18,7 +20,6 @@ namespace Tools.TimeTaskTool
         {
             isAwake = true;
             _taskscontainer = new TasksContainer();
-            
             _timer = new Timer(Tick, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(timeStep));
         }
         //============================================= public variables =============================================
@@ -32,9 +33,11 @@ namespace Tools.TimeTaskTool
         private static SemaphoreSlim _createRequestLock = new SemaphoreSlim(1);
 
         //============================================= life_circle members =============================================
+        [SelfDispose(SingleMember = "Init")]
         public void Dispose()
         {
             _timer.Dispose();
+            _timer = null;
         }
         
         private void Tick(object state)
@@ -81,5 +84,6 @@ namespace Tools.TimeTaskTool
             _taskscontainer.Remove_NodeByTaskID(taskID);
         }
         //============================================= private functions =============================================
+        
     }
 }

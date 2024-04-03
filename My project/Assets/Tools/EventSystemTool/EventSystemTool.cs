@@ -4,13 +4,8 @@ namespace Tools.EventSystemTool
 {
     public static class EventSystemTool
     {
-        private static EventSystem _eventSystem = null;
+        private static EventSystem _eventSystem = EventSystem.Init;
         
-        public static void Awake()
-        {
-            _eventSystem = EventSystem.Init;
-        }
-
         public static int RegisterEvent(string eventName, Action<object[]> callback)
         {
             return _eventSystem.RegisterEvent(eventName, callback);

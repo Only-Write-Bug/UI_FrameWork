@@ -7,17 +7,7 @@ using UnityEngine;
 
 public static class TimeTaskTool
 {
-    private static TimeTaskManager _timeTaskManager = null;
-
-    public static void Awake()
-    {
-        _timeTaskManager = TimeTaskManager.Init;
-    }
-
-    public static void Dispose()
-    {
-        _timeTaskManager?.Dispose();
-    }
+    private static readonly TimeTaskManager _timeTaskManager = TimeTaskManager.Init;
     
     public static async Task<int> Create_IntervalTask(int timeArgs, int loop, Action callback, bool isAfterUseCountDown = true)
     {
