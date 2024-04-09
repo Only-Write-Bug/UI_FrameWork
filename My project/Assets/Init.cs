@@ -21,7 +21,7 @@ public class Init : MonoBehaviour
     }
 
     /// <summary>
-    /// 触发所有添加SelfDispose特性的方法，会根据传入的singleMember决定是否为单例
+    /// 触发所有添加SelfDispose特性的方法，只有传入了单例成员才会有效销毁指定对象
     /// </summary>
     private void TouchOffAllSelfDisposeAttribute()
     {
@@ -43,14 +43,10 @@ public class Init : MonoBehaviour
                 if (instanceProperty == null)
                 {
                     Debug.LogWarning($"{declaringType} don't has the single member");
+                    break;
                 }
                 
                 var instance = instanceProperty.GetValue(null);
-                method.Invoke(instance, null);
-            }
-            else
-            {
-                var instance = Activator.CreateInstance(method.DeclaringType);
                 method.Invoke(instance, null);
             }
         }
