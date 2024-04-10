@@ -12,7 +12,7 @@ public class Init : MonoBehaviour
 {
     private void Awake()
     {
-        TimeTaskTool.Create_ScheduledTask(1000, () => { });
+        
     }
 
     private void OnDestroy()

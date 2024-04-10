@@ -1,5 +1,12 @@
 基于UGUI的UI管理框架
 
+UI框架说明：
+1.UI管理框架采用MVVM的架构，逻辑、数据分离，数据驱动View
+2.UI层次结构采用View-Panel的结构，即界面间的跳转是以View作为基本单位
+3.建议：无论是View还是Panel都以Canvas为单位，尽可能不要进行Canvas嵌套
+4.UI存入Assets/Prefabs目录中才会被成功导出
+5.成功导出的UI会在特殊目录下生成对应的Model文件（只有属性）
+
 包含工具：
 1.TimeTaskTool
     时间任务系统，时间单位为500毫秒
