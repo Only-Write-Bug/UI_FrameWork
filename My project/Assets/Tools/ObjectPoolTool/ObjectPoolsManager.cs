@@ -23,7 +23,7 @@ namespace Tools.ObjectPoolTool
             var pool = new ObjectPoolModel<T>(customizeName, customizeInitSize);
             if (_objPoolDic.TryGetValue(pool.get_poolName, out var oldPool))
             {
-                return oldPool;
+                return oldPool as ObjectPoolModel<T>;
             }
 
             _objPoolDic.Add(pool.get_poolName, pool);
@@ -40,9 +40,7 @@ namespace Tools.ObjectPoolTool
         public ObjectPoolModel<T> GetObjectPoolByName<T>(string poolName) where T : IRecycle, new()
         {
             _objPoolDic.TryGetValue(poolName, out var objPool);
-            if (objPool == null || objPool as ObjectPoolModel<T>)
-                return null;
-            return objPool as ObjectPoolModel<T>;
+            return (objPool as ObjectPoolModel<T>);
         }
     }
 }
