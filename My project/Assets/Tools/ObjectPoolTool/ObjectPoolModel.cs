@@ -3,9 +3,10 @@ using Unity.VisualScripting;
 
 namespace Tools.ObjectPoolTool
 {
-    public class ObjectPoolModel<T> where T :IRecycle, new()
+    public class ObjectPoolModel<T> where T : IRecycle, new()
     {
         private int _poolSize = 8;
+
         public int poolSize
         {
             get => _poolSize;
@@ -15,13 +16,13 @@ namespace Tools.ObjectPoolTool
                 ResetPoolSize();
             }
         }
-        
+
         private string _poolName = null;
         public string get_poolName => _poolName;
-        
+
         private Queue<T> _pool = null;
         private List<T> _inUseObj = new List<T>(8);
-        
+
         public ObjectPoolModel(string customizeName = null, int customizeInitSize = 8)
         {
             _poolName = "objPool_" + (customizeName ?? typeof(T).ToString());
@@ -32,7 +33,7 @@ namespace Tools.ObjectPoolTool
         {
             poolSize = _poolSize;
         }
-        
+
         /// <summary>
         /// 回收所有对象
         /// </summary>
@@ -42,9 +43,9 @@ namespace Tools.ObjectPoolTool
             {
                 if (_pool.Count >= _poolSize)
                     break;
-                if(t == null)
+                if (t == null)
                     continue;
-                
+
                 RecycleObj(t);
             }
 
@@ -57,14 +58,27 @@ namespace Tools.ObjectPoolTool
         /// <param name="obj"></param>
         public void RecycleObj(T obj)
         {
-            if(obj == null)
+            if (obj == null)
                 return;
-            
+
             obj.Recycle();
-            _pool.Enqueue(obj);
+            if (_pool.Count < _poolSize)
+                _pool.Enqueue(obj);
             _inUseObj.Remove(obj);
+            obj = default(T);
         }
-        
+
+        /// <summary>
+        /// 获取对象
+        /// </summary>
+        /// <returns></returns>
+        public T GetObject()
+        {
+            var tmpObj = _pool.Count > 0 ? _pool.Dequeue() : new T();
+            _inUseObj.Add(tmpObj);
+            return tmpObj;
+        }
+
         /// <summary>
         /// 重新设置对象池大小
         /// </summary>
@@ -88,7 +102,7 @@ namespace Tools.ObjectPoolTool
         /// </summary>
         private void FillUpTheObjectPool()
         {
-            while(_pool.Count <= _poolSize)
+            while (_pool.Count <= _poolSize)
                 _pool.Enqueue(new T());
         }
     }
