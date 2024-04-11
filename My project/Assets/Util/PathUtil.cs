@@ -28,5 +28,22 @@ namespace Util
 
             return leaf;
         }
+
+        /// <summary>
+        /// 获取文件类型后缀名
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public static string GetFileType(string file)
+        {
+            for (int i = file.Length - 1; i > 0; i--)
+            {
+                if(file[i] != '.')
+                    continue;
+                return file.Substring(i + 1, file.Length - i - 1);
+            }
+
+            return null;
+        }
     }
 }
