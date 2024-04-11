@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using JetBrains.Annotations;
 using Util;
@@ -20,7 +21,7 @@ namespace Tools.DirtyDataFileRecordingTool
             {
                 foreach (var file in tmpFiles)
                 {
-                    if(checkType.Equals(PathUtil.GetFileType(file)))
+                    if(checkType.Contains(PathUtil.GetFileType(file)))
                         targetFiles.Add(file);
                 }
             }
@@ -28,7 +29,7 @@ namespace Tools.DirtyDataFileRecordingTool
             {
                 foreach (var file in tmpFiles)
                 {
-                    if(!notCheckType.Equals(PathUtil.GetFileType(file)))
+                    if(!notCheckType.Contains(PathUtil.GetFileType(file)))
                         targetFiles.Add(file);
                 }
             }
