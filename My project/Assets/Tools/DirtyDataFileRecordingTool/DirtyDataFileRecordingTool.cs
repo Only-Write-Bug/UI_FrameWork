@@ -10,9 +10,7 @@ namespace Tools.DirtyDataFileRecordingTool
 {
     public static class DirtyDataFileRecordingTool
     {
-        public static void RecodingDirtyFile(string path,
-            [CanBeNull] string[] checkType,
-            [CanBeNull] string[] notCheckType)
+        public static void RecodingDirtyFile(string path, string[] checkType, string[] notCheckType, string xmlSavePath = null)
         {
             var tmpFiles = Directory.GetFiles(path);
             var targetFiles = new List<string>();
@@ -36,12 +34,13 @@ namespace Tools.DirtyDataFileRecordingTool
 
             //开始查看编写脏数据记录文件
             var xmlDoc = new XmlDocument();
-            var targetXml = Directory.GetFiles("DirtyDataLogger.xml");
-            if (targetXml.Length > 0)
-                xmlDoc.Load(targetXml[0]);
-            else
-                xmlDoc.Save(path + "DirtyDataLogger.xml");
-                
+            WriteDirtyData(xmlDoc, targetFiles);
+            xmlDoc.Save(path + "DirtyDataLogger.xml");
+        }
+
+        private static void WriteDirtyData(XmlDocument xml, List<string> files)
+        {
+            
         }
     }
 }
