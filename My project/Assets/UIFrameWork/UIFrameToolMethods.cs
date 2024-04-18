@@ -1,5 +1,5 @@
 using System.IO;
-using Tools.DirtyDataFileRecordingTool;
+using Tools.XMLTools;
 using UnityEditor;
 using UnityEngine;
 using Util;
@@ -19,7 +19,7 @@ namespace UIFrameWork
         public static void ExportUI()
         {
             CheckUIDirectories();
-            DirtyDataFileRecordingTool.RecodingDirtyFile(_prefabsPath, checkType, null);
+            XMLToolsManager.RefreshSpecifyDirectoryDirtyData(_prefabsPath, checkType, null);
         }
 
         /// <summary>

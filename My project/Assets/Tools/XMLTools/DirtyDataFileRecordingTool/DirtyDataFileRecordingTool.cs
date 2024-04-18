@@ -4,14 +4,21 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using JetBrains.Annotations;
+using Tools.XMLTools;
+using UnityEngine;
 using Util;
 
-namespace Tools.DirtyDataFileRecordingTool
+namespace Tools
 {
-    public static class DirtyDataFileRecordingTool
+    public class DirtyDataFileRecordingTool
     {
-        public static void RecodingDirtyFile(string path, string[] checkType, string[] notCheckType, string xmlSavePath = null)
+        private static DirtyDataFileRecordingTool _init = null;
+        public static DirtyDataFileRecordingTool Init => _init ??= new DirtyDataFileRecordingTool();
+
+        public void RecodingDirtyFile(string path, string[] checkType, string[] notCheckType)
         {
+            Directory.CreateDirectory(XMLToolsManager.get_defaultXMLSavePath + @"\DirtyDataFileXML");
+            
             var tmpFiles = Directory.GetFiles(path);
             var targetFiles = new List<string>();
             
@@ -35,7 +42,7 @@ namespace Tools.DirtyDataFileRecordingTool
             //开始查看编写脏数据记录文件
             var xmlDoc = new XmlDocument();
             WriteDirtyData(xmlDoc, targetFiles);
-            xmlDoc.Save(path + "DirtyDataLogger.xml");
+            xmlDoc.Save($"\\{PathUtil.GetSpecifiedLevelLeaf2Path(path)}_DirtyDataLogger.xml");
         }
 
         private static void WriteDirtyData(XmlDocument xml, List<string> files)
