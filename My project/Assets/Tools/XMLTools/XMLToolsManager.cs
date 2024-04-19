@@ -7,10 +7,7 @@ namespace Tools.XMLTools
     {
         private static string _defaultXMLSavePath = null;
 
-        public static string get_defaultXMLSavePath
-        {
-            get => _defaultXMLSavePath ??= Directory.GetCurrentDirectory() + @"\xml";
-        }
+        public static string get_defaultXMLSavePath => _defaultXMLSavePath ??= Directory.GetCurrentDirectory() + @"\xml";
 
         /// <summary>
         /// 刷新指定目录脏数据
